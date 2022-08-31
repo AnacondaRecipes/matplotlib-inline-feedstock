@@ -42,6 +42,7 @@ about:
   license_file: LICENSE
   summary: Inline Matplotlib backend for Jupyter
   dev_url: https://github.com/ipython/matplotlib-inline
+  doc_url: https://github.com/ipython/matplotlib-inline/blob/master/README.md
 
 extra:
   recipe-maintainers:
