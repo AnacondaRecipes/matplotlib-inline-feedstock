@@ -6,13 +6,13 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/m/matplotlib-inline/matplotlib_inline-0.1.7.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/matplotlib_inline-{{ version }}.tar.gz
   sha256: 8423b23ec666be3d16e16b60bdd8ac4e86e840ebd1dd11a30b9f117f2fa0ab90
 
 build:
   number: 0
   skip: true  # [py<38]
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
@@ -33,6 +33,7 @@ test:
     - ipython
   commands:
     - pip check
+    - python -c 'from matplotlib_inline.backend_inline import show'
 
 about:
   home: https://github.com/ipython/matplotlib-inline
