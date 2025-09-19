@@ -33,7 +33,7 @@ test:
     - ipython
   commands:
     - pip check
-    - python -c 'from matplotlib_inline.backend_inline import show'
+    - python -c "from matplotlib_inline.backend_inline import show"
 
 about:
   home: https://github.com/ipython/matplotlib-inline
