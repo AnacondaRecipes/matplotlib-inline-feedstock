@@ -1,25 +1,24 @@
 {% set name = "matplotlib-inline" %}
-{% set version = "0.1.6" %}
+{% set version = "0.1.7" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: f887e5f10ba98e8d2b150ddcf4702c1e5f8b3a20005eb0f74bfdbd360ee6f304
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/matplotlib_inline-{{ version }}.tar.gz
+  sha256: 8423b23ec666be3d16e16b60bdd8ac4e86e840ebd1dd11a30b9f117f2fa0ab90
 
 build:
   number: 0
-  skip: True  # [py<35]
-  script: {{ PYTHON }} -m pip install . -vv
+  skip: true  # [py<38]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - python
     - pip
     - setuptools
-    - wheel
   run:
     - python
     - traitlets
@@ -34,6 +33,7 @@ test:
     - ipython
   commands:
     - pip check
+    - python -c 'from matplotlib_inline.backend_inline import show'
 
 about:
   home: https://github.com/ipython/matplotlib-inline
