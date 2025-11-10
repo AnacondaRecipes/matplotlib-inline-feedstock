@@ -1,5 +1,10 @@
 {% set name = "matplotlib-inline" %}
-{% set version = "0.1.7" %}
+{% set version = "0.2.1" %}
+# When building out the initial package set for a new Python version the
+# recommendation is to run tests without ipython, then build
+# ipython, and then run tests with `test_extra="yes"` to test matplotlib_inline.backend_inline.
+# For a new python version, always build the package in pair with ipython.
+{% set test_extra = "no" %}
 
 package:
   name: {{ name|lower }}
@@ -7,33 +12,40 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/matplotlib_inline-{{ version }}.tar.gz
-  sha256: 8423b23ec666be3d16e16b60bdd8ac4e86e840ebd1dd11a30b9f117f2fa0ab90
+  sha256: e1ee949c340d771fc39e241ea75683deb94762c8fa5f2927ec57c83c4dffa9fe
 
 build:
-  number: 1
-  skip: true  # [py<38]
+  number: 0
+  skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
+    - flit-core >=3.2
   run:
     - python
     - traitlets
 
 test:
+{% if test_extra == 'yes' %}
   imports:
     - matplotlib_inline
     - matplotlib_inline.backend_inline
   requires:
     - pip
+    # matplotlib_inline/backend_inline.py imports matplotlib.
     - matplotlib-base
-    - ipython
   commands:
     - pip check
     - python -c "from matplotlib_inline.backend_inline import show"
+{% else %}
+  requires:
+    - pip
+  commands:
+    - pip check
+{% endif %}
 
 about:
   home: https://github.com/ipython/matplotlib-inline
