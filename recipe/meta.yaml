@@ -1,5 +1,5 @@
 {% set name = "matplotlib-inline" %}
-{% set version = "0.2.2" %}
+{% set version = "0.2.1" %}
 {% set test_extra = "no" %}
 
 # When building out the initial package set for a new Python version the
@@ -35,7 +35,7 @@ test:
   requires:
     - pip
     # matplotlib_inline/backend_inline.py imports matplotlib.
-    - matplotlib
+    - matplotlib-base
     # matplotlib_inline/backend_inline.py imports ipython.
     - ipython
   commands:
