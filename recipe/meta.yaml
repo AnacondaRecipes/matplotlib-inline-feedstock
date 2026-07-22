@@ -4,6 +4,8 @@
 # recommendation is to run tests without ipython, then build
 # ipython, and then run tests with `test_extra="yes"` to test matplotlib_inline.backend_inline.
 # For a new python version, always build the package in pair with ipython.
+{% set test_extra = "no" %}
+
 package:
   name: {{ name }}
   version: {{ version }}
@@ -39,10 +41,6 @@ test:
   commands:
     - pip check
     - python -c "from matplotlib_inline.backend_inline import show"
-  requires:
-    - pip
-  commands:
-    - pip check
 
 about:
   home: https://github.com/ipython/matplotlib-inline
