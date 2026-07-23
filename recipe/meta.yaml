@@ -1,11 +1,11 @@
 {% set name = "matplotlib-inline" %}
-{% set version = "0.2.1" %}
-{% set test_extra = "no" %}
-
+{% set version = "0.2.2" %}
 # When building out the initial package set for a new Python version the
 # recommendation is to run tests without ipython, then build
 # ipython, and then run tests with `test_extra="yes"` to test matplotlib_inline.backend_inline.
 # For a new python version, always build the package in pair with ipython.
+{% set test_extra = "no" %}
+
 package:
   name: {{ name }}
   version: {{ version }}
