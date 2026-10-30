@@ -15,7 +15,7 @@ source:
   sha256: 72f3fe8fce36b70d4a5b612f899090cd0401deddc4ea90e1572b9f4bfb058c79
 
 build:
-  number: 0
+  number: 1
   skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
@@ -30,17 +30,23 @@ requirements:
 
 test:
   imports:
-    - matplotlib_inline
-    - matplotlib_inline.backend_inline
+    # py3.15: matplotlib_inline/__init__.py itself does
+    # `from . import backend_inline, config`, and backend_inline imports
+    # matplotlib and IPython. Neither has a py315 build yet, so bootstrap the
+    # first py315 build without them, then rebuild with the full test once
+    # matplotlib and ipython land.
+    - matplotlib_inline  # [py<315]
+    - matplotlib_inline.backend_inline  # [py<315]
   requires:
     - pip
     # matplotlib_inline/backend_inline.py imports matplotlib.
-    - matplotlib-base
+    - matplotlib-base  # [py<315]
     # matplotlib_inline/backend_inline.py imports ipython.
-    - ipython
+    - ipython  # [py<315]
   commands:
     - pip check
-    - python -c "from matplotlib_inline.backend_inline import show"
+    - python -c "import importlib.metadata as m; print(m.version('matplotlib-inline'))"
+    - python -c "from matplotlib_inline.backend_inline import show"  # [py<315]
 
 about:
   home: https://github.com/ipython/matplotlib-inline
