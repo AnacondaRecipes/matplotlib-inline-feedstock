@@ -30,10 +30,12 @@ requirements:
 
 test:
   imports:
-    - matplotlib_inline
-    # py3.15: backend_inline imports matplotlib and IPython, which have no
-    # py315 build yet. Bootstrap the first py315 build without them, then
-    # rebuild with the full test once matplotlib and ipython land.
+    # py3.15: matplotlib_inline/__init__.py itself does
+    # `from . import backend_inline, config`, and backend_inline imports
+    # matplotlib and IPython. Neither has a py315 build yet, so bootstrap the
+    # first py315 build without them, then rebuild with the full test once
+    # matplotlib and ipython land.
+    - matplotlib_inline  # [py<315]
     - matplotlib_inline.backend_inline  # [py<315]
   requires:
     - pip
@@ -43,6 +45,7 @@ test:
     - ipython  # [py<315]
   commands:
     - pip check
+    - python -c "import importlib.metadata as m; print(m.version('matplotlib-inline'))"
     - python -c "from matplotlib_inline.backend_inline import show"  # [py<315]
 
 about:
